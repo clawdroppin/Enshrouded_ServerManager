@@ -1,0 +1,177 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+@theme {
+  --font-sans: 'Inter Variable', 'Segoe UI Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'Cascadia Code', Consolas, monospace;
+
+  /* Night over Embervale: cool slate surfaces */
+  --color-bg: #070a0e;
+  --color-bg-raised: #0a0e13;
+  --color-panel: #0e1319;
+  --color-panel-2: #131a22;
+  --color-hover: #19222c;
+  --color-line: #1d2731;
+  --color-line-strong: #283542;
+  --color-fg: #eef3f6;
+  --color-fg-2: #aab8c3;
+  --color-fg-3: #74838f;
+  --color-fg-4: #4d5a65;
+
+  /* The Flame (spirit teal) + gold, and the Shroud (magenta) */
+  --color-accent: #45e0c4;
+  --color-accent-strong: #17c3a6;
+  --color-accent-deep: #0d8a78;
+  --color-accent-dim: #0b2b2a;
+  --color-gold: #f3c562;
+  --color-shroud: #d94aa0;
+  --color-ok: #4ade80;
+  --color-warn: #facc15;
+  --color-err: #fb7185;
+  --color-info: #60a5fa;
+  --color-violet: #a78bfa;
+
+  --radius-xl: 14px;
+  --shadow-pop: 0 18px 50px -12px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(214 245 240 / 0.05);
+  --shadow-glow: 0 0 0 1px rgb(23 195 166 / 0.35), 0 8px 30px -8px rgb(23 195 166 / 0.45);
+
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-drift: drift 22s ease-in-out infinite alternate;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes drift {
+    from { transform: translate3d(-3%, 0, 0) scale(1); }
+    to { transform: translate3d(3%, -4%, 0) scale(1.08); }
+  }
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    user-select: none;
+    font-size: 13px;
+  }
+  input,
+  textarea,
+  [contenteditable],
+  .selectable {
+    user-select: text;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3744 transparent;
+  }
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+    outline-offset: 2px;
+  }
+  button {
+    cursor: default;
+  }
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+@utility glass {
+  background: color-mix(in srgb, var(--color-panel) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility text-flame {
+  background: linear-gradient(135deg, #fff6d8 0%, #f3c562 30%, #45e0c4 75%, #17c3a6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-flame {
+  background-image: linear-gradient(135deg, #5cf0d4 0%, #2dd4b7 45%, #14b39a 100%);
+}
+
+@utility shimmer-bar {
+  background-image: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-accent) 55%, transparent) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* Hero backdrop: the Flame's glow pushing back the Shroud, over a faint grid. */
+@utility shroud-sky {
+  background-image:
+    radial-gradient(ellipse 55% 70% at 18% -10%, rgb(23 195 166 / 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 60% at 92% 0%, rgb(217 74 160 / 0.13), transparent 70%),
+    radial-gradient(ellipse 40% 40% at 55% 120%, rgb(243 197 98 / 0.06), transparent 70%),
+    linear-gradient(rgb(214 245 240 / 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(214 245 240 / 0.022) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+}
+
+/* Range input – the Slider component draws the track */
+input[type='range'].range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 22px;
+  width: 100%;
+}
+input[type='range'].range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: transparent;
+}
+input[type='range'].range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 14px;
+  width: 14px;
+  margin-top: -5px;
+  border-radius: 999px;
+  background: #effffb;
+  border: 3px solid var(--color-accent-strong);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent);
+  transition: transform 120ms ease;
+}
+input[type='range'].range:active::-webkit-slider-thumb {
+  transform: scale(1.18);
+}
+
+.cm-editor {
+  height: 100%;
+  font-size: 12.5px;
+}
+.cm-editor .cm-scroller {
+  font-family: var(--font-mono);
+  line-height: 1.6;
+}
+.cm-editor.cm-focused {
+  outline: none;
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
